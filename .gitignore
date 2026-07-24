@@ -1,0 +1,36 @@
+# Large NGS data and raw sequences
+data/
+*.fa
+*.fasta
+*.fq
+*.fastq
+*.gz
+*.tar
+
+# Pangenome graph files & indexes
+*.gfa
+*.og
+*.gbz
+*.dist
+*.min
+*.xg
+*.pg
+
+# Alignment and variant files
+*.sam
+*.bam
+*.bai
+*.gaf
+*.vcf
+
+# Temporary files and scratch scripts
+scratch/
+*.tmp
+*.log
+
+# System and OS files
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+.vscode/

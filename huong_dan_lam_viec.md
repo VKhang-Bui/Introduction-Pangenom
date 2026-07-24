@@ -44,7 +44,7 @@ Tài liệu này quy định bối cảnh nghiên cứu và các nguyên tắc h
 *   **Cấu trúc quy định:**
     *   Tài liệu lý thuyết, hướng dẫn (`.md`): Lưu trong thư mục [documents](file:///mnt/d/1.HocViec/theory_and_resources/pangenom/documents).
     *   Nhật ký làm việc và kế hoạch hành động: Lưu và cập nhật tại [documents/nhat_ky_va_ke_hoach.md](file:///mnt/d/1.HocViec/theory_and_resources/pangenom/documents/nhat_ky_va_ke_hoach.md).
-    *   Kịch bản dòng lệnh/mã nguồn (Bash, R, Python): Lưu trong thư mục `scripts/`.
+    *   Kịch bản dòng lệnh/mã nguồn (Bash, R, Python): Lưu trong thư mục `src/`.
 
 ### Quy tắc 7: Khả năng phản biện và Biện luận khoa học (Critical Debating & Knowledge Gap Identification)
 *   **Yêu cầu:** Khi thảo luận hoặc khi người dùng đưa ra nhận định, ý hiểu của mình về một khái niệm, quy trình hay thuật toán, AI phải **chủ động phân tích, chỉ ra các lỗ hổng kiến thức (knowledge gaps), giả định chưa chính xác hoặc các khía cạnh chưa bao quát hết** trong nhận định đó.

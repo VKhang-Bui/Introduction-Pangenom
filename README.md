@@ -40,7 +40,7 @@ Introduction-Pangenom/
 ├── reference/                   # Tài liệu tham khảo, tệp PDF & hướng dẫn chuẩn
 │   ├── Matthews et al. - 2024 - A gentle introduction to pangenomics.pdf
 │   └── GFA-spec/                # Đặc tả định dạng GFAv1 & GFAv2
-├── scripts/                     # Kịch bản dòng lệnh Bash, Python & R (Đang phát triển)
+├── src/                         # Kịch bản dòng lệnh Bash, Python & R (Mã nguồn)
 └── data/                        # Thư mục chứa dữ liệu FASTA/FASTQ thực hành (Local)
 ```
 
