@@ -3,10 +3,13 @@
 *.fastq
 *.tar
 
-# Theo dõi thư mục src/ và thư mục data/
+# Theo dõi đầy đủ mã nguồn trong src/
 !src/
 !src/**
 
+# Thư mục data/: Bỏ qua mọi file dữ liệu bên trong, chỉ giữ lại thư mục rỗng (.gitkeep) trên GitHub
+data/*
+!data/.gitkeep
 
 # Pangenome graph files & indexes (dữ liệu đồ thị nặng sinh ra khi chạy)
 *.gfa
@@ -35,4 +38,3 @@ Thumbs.db
 __pycache__/
 *.pyc
 .vscode/
-
