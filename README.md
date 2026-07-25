@@ -53,7 +53,31 @@ Introduction-Pangenom/
 *   **Giai đoạn 3:** Trực quan hóa bằng `odgi viz`, `Bandage`, `SequenceTubeMap` và viết script R.
 *   **Giai đoạn 4:** Lập chỉ mục đồ thị, ánh xạ NGS Reads và gọi biến dị cấu trúc (SVs).
 
-👉 Xem chi tiết tại [documents/lo_trinh_hoc_pangenome.md](file:///mnt/d/1.HocViec/theory_and_resources/pangenom/documents/lo_trinh_hoc_pangenome.md).
+👉 Xem chi tiết tại [documents/lo_trinh_hoc_pangenome.md](file:///home/vkhang-bui/1.HocViec/theory_and_resources/pangenom/documents/lo_trinh_hoc_pangenome.md).
+
+---
+
+## 🛠️ Hướng Dẫn Cài Đặt Môi Trường (Environment Setup)
+
+Dưới đây là câu lệnh 1 bước để khởi tạo môi trường làm việc **`shina`** và cài đặt toàn bộ các công cụ Pangenomics & Tin sinh học được sử dụng trong dự án (`PGGB`, `VG`, `ODGI`, `Minigraph`, `Bandage`, `Samtools`, `Biopython`, `R-tidyverse`,...):
+
+### Cách 1: Cài đặt bằng Mamba (Nhanh & Tối ưu - Khuyên dùng)
+```bash
+# Tạo môi trường 'shina' và cài đặt tất cả các công cụ
+mamba create -n shina -c bioconda -c conda-forge pggb vg odgi minigraph bandage samtools bcftools bedtools bwa fastp seqkit gfatools pigz python biopython pandas matplotlib seaborn r-base r-tidyverse r-ggplot2 -y
+
+# Kích hoạt môi trường
+mamba activate shina
+```
+
+### Cách 2: Cài đặt bằng Conda
+```bash
+# Tạo môi trường 'shina' và cài đặt tất cả các công cụ
+conda create -n shina -c bioconda -c conda-forge pggb vg odgi minigraph bandage samtools bcftools bedtools bwa fastp seqkit gfatools pigz python biopython pandas matplotlib seaborn r-base r-tidyverse r-ggplot2 -y
+
+# Kích hoạt môi trường
+conda activate shina
+```
 
 ---
 
