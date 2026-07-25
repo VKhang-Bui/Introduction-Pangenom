@@ -10,7 +10,8 @@
 # Thư mục data/: Bỏ qua mọi file dữ liệu bên trong, chỉ giữ lại thư mục rỗng (.gitkeep) trên GitHub
 data/*
 !data/.gitkeep
-
+output/
+!output/.gitkeep
 # Pangenome graph files & indexes (dữ liệu đồ thị nặng sinh ra khi chạy)
 *.gfa
 *.og
