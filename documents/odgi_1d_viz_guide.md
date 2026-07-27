@@ -50,8 +50,20 @@ Một sơ đồ ma trận 1D (`odgi viz`) bao gồm 3 thành phần chính:
 
 #### A. Ý nghĩa màu sắc & Chế độ tô màu
 * **Chế độ:** Tô màu theo mẫu (`-M / --multiqc`).
-* **Quy ước màu:** Mỗi mẫu/haplotype trên Trục Y được gán 1 màu sắc riêng biệt (Ví dụ: `grch38` hồng tím, `chm1` xanh ngọc, `dbb` xanh lá tươi, `refseqgene` đỏ, `huref` xanh rêu,...).
-* **Mục đích:** Giúp phân biệt bằng mắt thường đường đi của từng cá thể qua các nút trên Trục X.
+* **Mục đích:** Giúp phân biệt bằng mắt thường đường đi của từng cá thể (haplotype) qua các nút trên Trục X.
+* **Quy ước màu sắc từng mẫu (12 Haplotypes):**
+  * 🟣 **Hồng tím (Magenta):** `grch38#1#chr6` (Hệ gen tham chiếu chuẩn GRCh38)
+  * 🟤 **Nâu xám (Brown):** `dr51#1#chr6` (Haplotype nhóm DR51)
+  * 🟢 **Xanh ngọc (Teal):** `chm1#1#chr6` (Dòng tế bào đơn bộ CHM1)
+  * 🟢 **Xanh lá tươi (Lime Green):** `dbb#1#chr6` (Haplotype nhóm DR53)
+  * 💖 **Hồng tươi (Pink):** `mann#1#chr6` (Haplotype nhóm DR53)
+  * 🟢 **Xanh lá nhạt (Green):** `ssto#1#chr6` (Haplotype nhóm DR53)
+  * ⬛ **Xám đen (Dark Gray):** `dr53#1#chr6` (Haplotype nhóm DR53)
+  * 🟡 **Vàng chanh (Yellow-Green):** `qbl#1#chr6` (Haplotype nhóm DR52)
+  * 🔴 **Đỏ (Red):** `refseqgene#1#chr6` (Chuỗi chú giải NCBI RefSeq)
+  * 🟣 **Tím tươi (Purple):** `dr52#1#chr6` (Haplotype nhóm DR52)
+  * 🟣 **Hồng tím sẫm (Dark Magenta):** `cox#1#chr6` (Haplotype nhóm DR52)
+  * 🟢 **Xanh rêu (Olive Green):** `huref#1#chr6` (Bộ gen cá nhân của Craig Venter)
 
 #### B. Hướng dẫn đọc cặn kẽ từng bước
 1. **Quét dọc theo từng cột (Trục X):** Tìm các cột có dải màu kéo dài từ trên xuống dưới.
@@ -82,10 +94,10 @@ Một sơ đồ ma trận 1D (`odgi viz`) bao gồm 3 thành phần chính:
 
 #### A. Ý nghĩa màu sắc & Chế độ tô màu
 * **Chế độ:** Tô màu theo độ sâu bao phủ nút (`-d / --depth` - Grayscale mode).
-* **Quy ước màu:**
-  * **Màu Trắng:** Depth = 0 (Ô trống / Mất đoạn).
-  * **Màu Xám Nhạt:** Depth = 1 (**Single-copy** — Haplotype chỉ đi qua nút đó đúng 1 lần).
-  * **Màu Xám Đậm / Đen:** Depth $\ge 2$ (**Multi-copy** — Haplotype đi qua nút đó 2, 3 hoặc nhiều lần).
+* **Quy ước màu sắc:**
+  * ⬜ **Màu Trắng:** Depth = 0 (Ô trống / Mất đoạn / Unvisited).
+  * ⬛ **Màu Xám Nhạt (Light Gray):** Depth = 1 (**Single-copy** — Haplotype chỉ đi qua nút đó đúng 1 lần).
+  * ⬛ **Màu Xám Đậm / Đen (Dark Gray / Black):** Depth $\ge 2$ (**Multi-copy** — Haplotype đi qua nút đó 2, 3 hoặc nhiều lần).
 
 #### B. Hướng dẫn đọc cặn kẽ từng bước
 1. So sánh độ đậm nhạt của ô màu giữa các mẫu để phát hiện **Biến thể số lượng bản sao (Copy Number Variation - CNV gain/loss)**.
@@ -108,10 +120,10 @@ Một sơ đồ ma trận 1D (`odgi viz`) bao gồm 3 thành phần chính:
 
 #### A. Ý nghĩa màu sắc & Chế độ tô màu
 * **Chế độ:** Tô màu theo chiều đọc chuỗi nucleotide (`-z / --inv`).
-* **Quy ước màu:**
-  * **Màu Đen:** Nút được đọc theo **chiều xuôi (`+` strand / Forward orientation)**.
-  * **Màu Đỏ:** Nút được đọc theo **chiều ngược bù (`-` strand / Reverse Complement / Inversion $180^\circ$)**.
-  * **Màu Trắng:** Depth = 0 (Ô trống).
+* **Quy ước màu sắc:**
+  * ⬛ **Màu Đen:** Nút được đọc theo **chiều xuôi (`+` strand / Forward orientation)**.
+  * 🔴 **Màu Đỏ:** Nút được đọc theo **chiều ngược bù (`-` strand / Reverse Complement / Inversion $180^\circ$)**.
+  * ⬜ **Màu Trắng:** Depth = 0 (Ô trống).
 
 #### B. Hướng dẫn đọc cặn kẽ từng bước
 1. Quét theo từng hàng ngang để tìm các ô bôi **MÀU ĐỎ**.
@@ -131,10 +143,10 @@ Một sơ đồ ma trận 1D (`odgi viz`) bao gồm 3 thành phần chính:
 
 #### A. Ý nghĩa màu sắc & Chế độ tô màu
 * **Chế độ:** Tô màu dải sắc gradient theo tọa độ từ đầu đến cuối bộ gen (`-p / --pos`).
-* **Quy ước màu:**
-  * **Màu Xám Nhạt (Sáng nhất):** Nút nằm ở **đầu đoạn gen (Vị trí 0%)**.
-  * **Màu Xám Trung Bình:** Nút nằm ở **giữa đoạn gen**.
-  * **Màu Đen Sẫm (Tối nhất):** Nút nằm ở **cuối đoạn gen (Vị trí 100%)**.
+* **Quy ước màu sắc:**
+  * ⬜ **Màu Xám Nhạt (Sáng nhất):** Nút nằm ở **đầu đoạn gen (Vị trí 0%)**.
+  * ⬛ **Màu Xám Trung Bình:** Nút nằm ở **giữa đoạn gen**.
+  * ⬛ **Màu Đen Sẫm (Tối nhất):** Nút nằm ở **cuối đoạn gen (Vị trí 100%)**.
 
 #### B. Hướng dẫn đọc cặn kẽ từng bước
 1. Quan sát chiều biến thiên của dải màu gradient trên từng hàng từ trái sang phải.
@@ -155,10 +167,10 @@ Một sơ đồ ma trận 1D (`odgi viz`) bao gồm 3 thành phần chính:
 
 #### A. Ý nghĩa màu sắc & Chế độ tô màu
 * **Chế độ:** Tô màu khoanh vùng các ký tự `N` chưa xác định (`-u / --uncalled`).
-* **Quy ước màu:**
-  * **Màu Đen:** Nút chứa các nucleotide chuẩn ($A, C, G, T$) đã gọi chính xác (**Called bases**).
-  * **Màu Xanh Lá Cây Tươi:** Nút chứa các **nucleotide chưa xác định / Ký tự `N` (Uncalled / Gap bases)**.
-  * **Màu Trắng:** Depth = 0 (Ô trống).
+* **Quy ước màu sắc:**
+  * ⬛ **Màu Đen:** Nút chứa các nucleotide chuẩn ($A, C, G, T$) đã gọi chính xác (**Called bases**).
+  * 🟩 **Màu Xanh Lá Cây Tươi (Bright Green):** Nút chứa các **nucleotide chưa xác định / Ký tự `N` (Uncalled / Gap bases)**.
+  * ⬜ **Màu Trắng:** Depth = 0 (Ô trống).
 
 #### B. Hướng dẫn đọc cặn kẽ từng bước
 1. Quét từng hàng ngang để tìm các vệt đốm **MÀU XANH LÁ CÂY TƯƠI**.
@@ -176,9 +188,9 @@ Một sơ đồ ma trận 1D (`odgi viz`) bao gồm 3 thành phần chính:
 
 #### A. Ý nghĩa cấu trúc & Màu sắc
 * **Cấu trúc:** Chỉ có duy nhất 1 hàng có tên **`COMPRESSED_MODE`** nén toàn bộ 12 haplotypes thành 1 dải ma trận tổng hợp.
-* **Quy ước màu:**
-  * **Màu Nhạt / Trắng:** Vùng có **độ đồng nhất cao (High Conservation)**. Tất cả các mẫu đều đi cùng một thứ tự và hướng.
-  * **Màu Đỏ Thẫm / Crimson:** Vùng có **độ xung đột / rẽ nhánh cao (High Topological Divergence)**. Nơi các mẫu rẽ nhánh đi theo nhiều hướng khác nhau.
+* **Quy ước màu sắc:**
+  * ⬜ **Màu Nhạt / Trắng:** Vùng có **độ đồng nhất cao (High Conservation)**. Tất cả các mẫu đều đi cùng một thứ tự và hướng.
+  * 🟥 **Màu Đỏ Thẫm / Crimson:** Vùng có **độ xung đột / rẽ nhánh cao (High Topological Divergence)**. Nơi các mẫu rẽ nhánh đi theo nhiều hướng khác nhau.
 
 #### B. Phân tích kết quả thực tế trên tệp dữ liệu `DRB1-3123`
 * **Kết quả:** Dải màu `COMPRESSED_MODE` xuất hiện các vệt **Đỏ Thẫm** kéo dài liên tục khắp chiều dài Trục X.
