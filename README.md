@@ -36,11 +36,17 @@ Introduction-Pangenom/
 ├── README.md                    # Tài liệu giới thiệu dự án & phân công nhiệm vụ
 ├── documents/                   # Thư mục lưu trữ tài liệu hướng dẫn & lộ trình
 │   ├── pangenome_theory_guide.md# Cẩm nang lý thuyết & phân tích Pangenome
-│   └── lo_trinh_hoc_pangenome.md # Lộ trình 4 giai đoạn làm chủ Pangenomics
+│   ├── lo_trinh_hoc_pangenome.md # Lộ trình 4 giai đoạn làm chủ Pangenomics
+│   ├── odgi_1d_viz_guide.md     # Hướng dẫn chi tiết đọc chẩn đoán ma trận 1D ODGI
+│   ├── PGGB.md                  # Cẩm nang kỹ thuật & chuẩn đầu vào cho PGGB
+│   └── nhat_ky_va_ke_hoach.md   # Nhật ký làm việc & Kế hoạch hành động dự án
 ├── reference/                   # Tài liệu tham khảo, tệp PDF & hướng dẫn chuẩn
 │   ├── Matthews et al. - 2024 - A gentle introduction to pangenomics.pdf
 │   └── GFA-spec/                # Đặc tả định dạng GFAv1 & GFAv2
 ├── src/                         # Kịch bản dòng lệnh Bash, Python & R (Mã nguồn)
+│   ├── odgi_viz.sh              # Script xuất 2 sơ đồ 1D ODGI quan trọng nhất (-M và -d)
+│   ├── pggb/                    # Kịch bản chạy pipeline PGGB
+│   └── fasta_pansn/             # Kịch bản chuẩn hóa tên chuỗi PanSN
 └── data/                        # Thư mục chứa dữ liệu FASTA/FASTQ thực hành (Local)
 ```
 
