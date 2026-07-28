@@ -6,6 +6,12 @@ Tài liệu này ghi chép lại toàn bộ tiến độ làm việc, các cột
 
 ## 1. Nhật Ký Tiến Độ (Work Log)
 
+### 📅 Ngày 28/07/2026: Chuẩn Hóa Cẩm Nang Kỹ Thuật Đầu Vào Cho PGGB
+* **Công việc đã hoàn thành:**
+  1. Tổng hợp và biên soạn cẩm nang kỹ thuật về công cụ PGGB tại [documents/PGGB.md](file:///home/vkhang-bui/1.HocViec/theory_and_resources/pangenom/documents/PGGB.md).
+  2. Xác minh và hệ thống hóa bản chất dữ liệu đầu vào PGGB: Bắt buộc là FASTA kết quả từ **De Novo Assembly (Long-reads)**, được nén `bgzip` và chuẩn hóa theo quy chuẩn **PanSN** (`><sample>#<haplotype>#<contig>`).
+  3. Xây dựng sơ đồ luồng công việc 6 bước chuẩn từ FASTQ thô đến đồ thị PGGB GFA.
+
 ### 📅 Ngày 27/07/2026: Đào Sâu Trực Quan Hóa 1D/2D ODGI & Cập Nhật Thư Mục Tài Liệu
 * **Công việc đã hoàn thành:**
   1. Phân tích chi tiết toàn bộ các bức ảnh trực quan trong thư mục [out1](file:///home/vkhang-bui/1.HocViec/theory_and_resources/pangenom/out1) từ kết quả chạy thử nghiệm PGGB dữ liệu locus `DRB1-3123`.
