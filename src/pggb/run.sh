@@ -16,7 +16,7 @@ pggb \
   -o "$output" \
   -n "$n_haplo" \
   -t 8 \
-  -T 1 \
-  -p 70 \
-  -s 3000 \
-  -V "grch38#1#chr6:" || true
+  # -T 1 \
+  # -p 70 \
+  # -s 3000 \
+  -v
