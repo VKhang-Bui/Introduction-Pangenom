@@ -18,7 +18,7 @@ for f in "$input"/*.fa; do
     # -n : Áp dụng trên toàn bộ header (Full header name)
     # -p "^" : Khớp vị trí đầu tiên của header
     # -r "${name}#1#read_{nr}_" : Chèn prefix PanSN và chỉ số thứ tự {nr} tự động của SeqKit
-    seqkit replace -n -p "^" -r "${name}#1#read_{nr}_" "$f" >> "$outfile"
+    seqkit replace -p "^" -r "${name}#1#read_{nr}_" "$f" >> "$outfile"
 
     count=$(seqkit stats -t dna "$f" | awk 'NR==2{print $4}')
     echo "✓ Đã xử lý file '$name.fa' với $count reads/contigs."

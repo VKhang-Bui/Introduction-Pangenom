@@ -43,60 +43,39 @@ ACGTACGT...
 
 ---
 
-## 4. Quy Trình Tổng Quan Xử Lý Dữ Liệu (Bioinformatics Workflow)
+## 4. Quy Trình Chuẩn Bị Dữ Liệu Đầu Vào Cho PGGB
 
-Dưới đây là luồng công việc chuẩn từ tệp FASTQ thô đến đồ thị PGGB:
+Dưới đây là sơ đồ quy trình làm việc chính thức của PGGB tích hợp các công cụ tin sinh học cấu thành:
 
-```text
-┌─────────────────────────────────────────────────────────┐
-│ 1. DỮ LIỆU ĐẦU VÀO THÔ                                  │
-│    Tệp FASTQ đọc dài (PacBio HiFi / Oxford Nanopore)    │
-└────────────────────────────┬────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────┐
-│ 2. LẮP RÁP DE NOVO (Assembly)                           │
-│    Dùng hifiasm / Flye ➔ Xuất tệp FASTA từng mẫu riêng  │
-└────────────────────────────┬────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────┐
-│ 3. CHUẨN HÓA PANSN & GỘP TỆP                            │
-│    • Đổi tên header ➔ >Sample#Hap#Contig                │
-│    • Gộp tệp FASTA, nén bgzip & tạo chỉ mục .fai        │
-└────────────────────────────┬────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────┐
-│ 4. KHỞI CHẠY PGGB PIPELINE                              │
-│    PGGB Engine (wfmash ➔ seqwish ➔ smoothxg)            │
-│    ➔ Xuất tệp Đồ thị Pangenome GFA đầu ra (.gfa)        │
-└─────────────────────────────────────────────────────────┘
-```
+> [!NOTE]
+> Xem chi tiết lý thuyết và hướng dẫn các công cụ thành phần (`wfmash`, `seqwish`, `smoothxg`, `odgi`, `gfaffix`, `vg`) tại [pggb_tools_guide.md](pggb_tools_guide.md).
+
+![Sơ đồ quy trình PGGB tích hợp các công cụ tin sinh học](images/pggb_workflow_tools.png)
+
+*(Tệp hình ảnh lưu tại: [documents/images/pggb_workflow_tools.png](file:///home/vkhang-bui/1.HocViec/projects/pangenom/documents/images/pggb_workflow_tools.png))*
 
 ### Các bước câu lệnh thực thi mẫu:
 
-1.  **Lắp ráp De Novo từng mẫu (với PacBio HiFi):**
-    ```bash
-    hifiasm -o sampleA.asm -t 16 sampleA.fastq.gz
-    gfatools gfa2fa sampleA.asm.bp.p_ctg.gfa > sampleA.fasta
-    ```
+1.  **Đổi tên tiêu đề FASTA sang chuẩn PanSN & định danh Contigs:**
+    *   *Cách 1: Dùng lệnh `sed` (Bash thuần):*
+        ```bash
+        sed -i 's/^>/>sampleA#1#ctg_/g' sampleA.fasta
+        ```
+    *   *Cách 2: Dùng `seqkit replace` (Nhanh & An toàn - Khuyên dùng):*
+        ```bash
+        seqkit replace -p "^" -r "sampleA#1#ctg_" sampleA.fasta -o sampleA_pansn.fasta
+        ```
 
-2.  **Đổi tên tiêu đề FASTA theo chuẩn PanSN:**
+2.  **Gộp tệp, nén bgzip và tạo chỉ mục fai:**
     ```bash
-    sed -i 's/>/>sampleA#1#/g' sampleA.fasta
-    ```
-
-3.  **Gộp tệp, nén bgzip và tạo chỉ mục fai:**
-    ```bash
-    cat *.fasta > all_samples.fasta
+    cat *_pansn.fasta > all_samples.fasta
     bgzip -@ 8 all_samples.fasta
     samtools faidx all_samples.fasta.gz
     ```
 
-4.  **Khởi chạy PGGB:**
+3.  **Khởi chạy PGGB:**
     ```bash
-    pggb -i all_samples.fasta.gz -p 98 -s 5000 -t 16 -o pggb_output/
+    pggb -i all_samples.fasta.gz -n 9 -p 98 -s 5000 -t 16 -o pggb_output/
     ```
 
 ---
@@ -106,4 +85,4 @@ Dưới đây là luồng công việc chuẩn từ tệp FASTQ thô đến đ�
 1. **Garrison, E., Guarracino, A., Heumos, S., et al. (2023).** *Building pangenome graphs.* bioRxiv, 2023.04.05.535718. [https://doi.org/10.1101/2023.04.05.535718](https://doi.org/10.1101/2023.04.05.535718)
 2. **PanSN Specification (HPRC):** *Pangenome Sequence Naming standard convention.* GitHub Repository. [https://github.com/pangenome/PanSN-spec](https://github.com/pangenome/PanSN-spec)
 3. **Cheng, H., Concepcion, G. T., Feng, X., Zhang, H., & Li, H. (2021).** *Haplotype-resolved de novo assembly of diploid genomes with hifiasm.* Nature Methods, 18(2), 170-175. [https://doi.org/10.1038/s41592-020-01056-5](https://doi.org/10.1038/s41592-020-01056-5)
-4. **Tài liệu dự án liên quan:** [lo_trinh_hoc_pangenome.md](file:///home/vkhang-bui/1.HocViec/theory_and_resources/pangenom/documents/lo_trinh_hoc_pangenome.md) và [pangenome_theory_guide.md](file:///home/vkhang-bui/1.HocViec/theory_and_resources/pangenom/documents/pangenome_theory_guide.md).
+4. **Tài liệu dự án liên quan:** [pggb_tools_guide.md](pggb_tools_guide.md), [lo_trinh_hoc_pangenome.md](lo_trinh_hoc_pangenome.md) và [pangenome_theory_guide.md](pangenome_theory_guide.md).
