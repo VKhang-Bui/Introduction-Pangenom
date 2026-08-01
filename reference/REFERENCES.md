@@ -1,4 +1,4 @@
-# 📚 Danh Mục Tài Liệu Tham Khảo (References & Resources)
+# Danh Mục Tài Liệu Tham Khảo (References & Resources)
 
 Tài liệu này tổng hợp toàn bộ các tệp tài liệu cục bộ và bài báo khoa học tham khảo trong dự án Pangenomics.
 
