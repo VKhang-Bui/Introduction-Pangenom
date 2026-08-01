@@ -37,6 +37,7 @@ Introduction-Pangenom/
 ├── documents/                   # Thư mục lưu trữ tài liệu hướng dẫn & lộ trình
 │   └── images/                  # Thư mục hình ảnh minh họa trực quan
 ├── reference/                   # Tài liệu tham khảo, tệp PDF & hướng dẫn chuẩn
+│   ├── REFERENCES.md            # Tổng hợp đầy đủ nguồn tham khảo & bài báo khoa học
 │   └── GFA-spec/                # Đặc tả định dạng GFAv1 & GFAv2
 ├── src/                         # Kịch bản dòng lệnh Bash, Python & R (Mã nguồn)
 │   ├── fasta_pansn/             # Kịch bản chuẩn hóa tên chuỗi PanSN (Bash, Python, SeqKit)
@@ -86,6 +87,8 @@ conda activate shina
 ---
 
 ## 📖 Tài Liệu Tham Khảo (References)
+
+> 📌 **Danh mục tổng hợp đầy đủ:** Tất cả bài báo khoa học, tài liệu kỹ thuật và liên kết được lưu trữ và cập nhật tại [reference/REFERENCES.md](file:///home/vkhang-bui/1.HocViec/projects/pangenom/reference/REFERENCES.md).
 
 1.  **Matthews, C. A., Watson-Haigh, N. S., Burton, R. A., & Sheppard, A. E. (2024).** *A gentle introduction to pangenomics.* Briefings in Bioinformatics, 25(6), bbae588. [https://doi.org/10.1093/bib/bbae588](https://doi.org/10.1093/bib/bbae588)
 2.  **Garrison, E., Guarracino, A., Heumos, S., et al. (2023).** *Building pangenome graphs.* bioRxiv, 2023.04.05.535718. [https://doi.org/10.1101/2023.04.05.535718](https://doi.org/10.1101/2023.04.05.535718)

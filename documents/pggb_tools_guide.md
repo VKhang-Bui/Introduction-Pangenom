@@ -43,17 +43,57 @@ Công cụ **`wfmash`** (kết hợp giữa *MashMap* và *Wavefront Alignment -
 ## 🕸️ 2. CÔNG CỤ `seqwish` (VARIATION GRAPH INDUCER)
 
 ### 2.1. Mục Đích & Vai Trò
-*   **`seqwish`** nhận tệp căn chỉnh PAF (`.paf`) từ `wfmash` và tệp chuỗi FASTA ban đầu để **khởi tạo đồ thị biến dị thô (Variation Graph)** dưới định dạng **GFAv1** (`.gfa`).
+Công cụ **`seqwish`** đóng vai trò trái tim trong bước chuyển đổi hạ tầng của PGGB. `seqwish` nhận tệp căn chỉnh PAF (`.paf`) từ `wfmash` và tệp chuỗi FASTA ban đầu để **khởi tạo đồ thị biến dị thô (Variation Graph)** hoàn toàn không phụ thuộc vào hệ gen tham chiếu (*Reference-Free*), lưu trữ dưới định dạng chuẩn **GFAv1** (`.gfa`).
 
-### 2.2. Thuật Toán Cốt Lõi
-*   **Biến PAF thành Đồ Thị:** `seqwish` coi các đoạn căn chỉnh trùng khớp trong file PAF là các nút chung (shared nodes) và các dải không khớp là các nhánh bong bóng (bubbles / edges).
-*   **Không Thiên Vị Tham Chiếu:** Đồ thị sinh ra hoàn toàn duy trì cấu trúc tô pô chính xác từ dữ liệu căn chỉnh All-vs-All.
+---
 
-### 2.3. Bảng Tham Số Mặc Định Của `seqwish`
+### 2.2. Bản Chất Thuật Toán: Alignment Graph Induction & Transitive Closure
+
+Khác với các công cụ dựng đồ thị dựa trên k-mer (de Bruijn graph) hoặc dựa trên genome tham chiếu (như `minigraph`), `seqwish` áp dụng thuật toán **Alignment Graph Induction** với 3 bước cốt lõi:
+
+```mermaid
+flowchart TD
+    A["Tệp FASTA (.fa)<br/>(Tất cả Haplotypes)"] --> C["Mảng vị trí Nucleotide<br/>Pos(haplotype, position)"]
+    B["Tệp PAF (.paf)<br/>(Căn chỉnh có CIGAR)"] --> D["Xác định các cặp Nucleotide tương đương"]
+    C --> E["Phép đóng bắc cầu (Transitive Closure)<br/>Thuật toán Disjoint-Set Union (DSU)"]
+    D --> E
+    E --> F["Nén đường đi đơn (Simple Path Compression)"]
+    F --> G["Xuất Đồ thị Biến dị GFAv1 (.gfa)<br/>(Dòng S, L, P)"]
+```
+
+1. **Khởi tạo không gian vị trí (Positional Space Construction)**:
+   - Tất cả các chuỗi nucleotide trong tệp FASTA được biểu diễn trên mảng tọa độ 1D liên tục. Mỗi base tại vị trí $p$ trên chuỗi $i$ được định danh duy nhất $Pos(i, p)$.
+2. **Phép đóng bắc cầu (Transitive Closure via Disjoint-Set Union / Union-Find)**:
+   - Chuỗi CIGAR trong tệp PAF chỉ ra các cặp base **khớp chính xác (Match `=` / `M`)**.
+   - Nếu $A \sim B$ (base $A$ tương đương base $B$) và $B \sim C$, tính chất bắc cầu kết luận $A \sim C$.
+   - `seqwish` ứng dụng cấu trúc dữ liệu **Disjoint-Set Union (DSU)** để gộp các vị trí nucleotide tương đương thành các **Tập hợp tương đương (Equivalence Class)**, tương ứng với một **Đỉnh (Node / Segment 'S')** trong đồ thị.
+3. **Thu nén đường đi và xuất định dạng GFAv1**:
+   - **Segment (Dòng `S`)**: Các nucleotide đứng cạnh nhau trên chuỗi ban đầu và không phân nhánh được nén thành đoạn Segment dài hơn.
+   - **Link (Dòng `L`)**: Cạnh định hướng thể hiện sự nối tiếp giữa các Node.
+   - **Path (Dòng `P`)**: Đường đi khôi phục lại hoàn toàn trình tự ban đầu của từng genome/haplotype.
+
+---
+
+### 2.3. Phân Tích Bộ Tham Số CLI & Chiến Lược Điều Chỉnh (Parameter Tuning)
+
+#### 2.3.1. Bảng Tra Cứu Bộ Tham Số CLI
+
 | Tham số CLI | Tên tham số đầy đủ | Giá trị mặc định | Ý nghĩa sinh học & thuật toán |
 | :--- | :--- | :---: | :--- |
-| **`-k`** | `--min-match-len` | **`19`** | Độ dài đoạn khớp tối thiểu để khởi tạo một node đồ thị (lọc nhiễu vi lặp). |
-| **`-B`** | `--transclose-batch` | **`10000000`** (10M) | Số base pair xử lý trong mỗi batch cho thuật toán đóng bắc cầu (transitive closure). |
+| **`-s`** | `--fasta` | *(Bắt buộc)* | Tệp FASTA đầu vào chứa tất cả chuỗi haplotype. Yêu cầu tệp chỉ mục `.fai` (`samtools faidx`). |
+| **`-p`** | `--paf` | *(Bắt buộc)* | Tệp căn chỉnh PAF chứa chuỗi CIGAR (Cột 12 - tag `cg:Z:`). |
+| **`-g`** | `--gfa` | *(Bắt buộc)* | Đường dẫn tệp GFAv1 đầu ra. |
+| **`-k`** | `--min-match-len` | **`19`** | Độ dài chuỗi khớp tối thiểu (bp) để thực hiện transclose. Lọc nhiễu vi trùng khớp ngẫu nhiên. |
+| **`-B`** | `--transclose-batch` | **`10000000`** (10M) | Số lượng liên kết/dữ liệu nạp vào RAM ở mỗi chu kỳ transclose. |
+| **`-f`** | `--sparse-factor` | **`0`** | Hệ số thưa của mảng chỉ mục vị trí (`posic`), giúp giảm dung lượng RAM cho mảng con trỏ. |
+| **`-t`** | `--threads` | **`1`** | Số luồng CPU tính toán song song. |
+
+#### 2.3.2. Chiến Lược Điều Chỉnh Tham Số `-k` và `-B` Theo Đối Tượng Sinh Học
+
+| Đối tượng sinh học | Quy mô Genome | Đặc điểm di truyền | Khuyến nghị `-k` | Khuyến nghị `-B` | Rationale (Cơ sở khoa học) |
+| :--- | :--- | :--- | :---: | :---: | :--- |
+| **Nấm (Fungi)** | 10 – 50 Mb | Đa dạng di truyền cao, phân hóa xa, nhiều micro-indels | **`7 – 19`** | **`10M – 50M`** | `-k` nhỏ giữ lại các đoạn tương đồng ngắn giữa các chủng phân hóa xa; RAM không phải nút thắt cổ chai. |
+| **Người (Humans)** | ~3.1 Gb/hap | Đa dạng trung bình (~0.1%), giàu yếu tố lặp lại (LINE/SINE, Centromere) | **`29 – 79`** | **`20M – 50M`** | `-k` lớn loại bỏ các vi-trùng-khớp nhiễu do vùng repeat gây ra búi tóc rối (tangled hairballs); chia nhỏ batch tránh bùng nổ RAM (OOM). |
 
 ---
 
@@ -109,5 +149,6 @@ Công cụ **`wfmash`** (kết hợp giữa *MashMap* và *Wavefront Alignment -
 
 1. **Broder, A. Z. (1997).** *On the resemblance and containment of documents.* IEEE Compression and Complexity of Sequences, 21–29. [https://doi.org/10.1109/SEQUEN.1997.666900](https://doi.org/10.1109/SEQUEN.1997.666900)
 2. **Marco-Sola, S., et al. (2021).** *The wavefront sequence alignment algorithm (WFA).* Bioinformatics, 37(4), 456–463. [https://doi.org/10.1093/bioinformatics/btaa777](https://doi.org/10.1093/bioinformatics/btaa777)
-3. **Guarracino, A., Heumos, S., Garrison, E., et al. (2022).** *ODGI: understanding pangenome graphs.* Bioinformatics, 38(13), 3319–3326. [https://doi.org/10.1093/bioinformatics/btac308](https://doi.org/10.1093/bioinformatics/btac308)
-4. **Tài liệu dự án liên quan:** [PGGB.md](file:///home/vkhang-bui/1.HocViec/projects/pangenom/documents/PGGB.md) và [lo_trinh_hoc_pangenome.md](file:///home/vkhang-bui/1.HocViec/projects/pangenom/documents/lo_trinh_hoc_pangenome.md).
+3. **Garrison, E., Guarracino, A., et al. (2023).** *Variation graph induction with seqwish.* Bioinformatics, 39(1), btac810. [https://doi.org/10.1093/bioinformatics/btac810](https://doi.org/10.1093/bioinformatics/btac810)
+4. **Guarracino, A., Heumos, S., Garrison, E., et al. (2022).** *ODGI: understanding pangenome graphs.* Bioinformatics, 38(13), 3319–3326. [https://doi.org/10.1093/bioinformatics/btac308](https://doi.org/10.1093/bioinformatics/btac308)
+5. **Tài liệu dự án liên quan:** [PGGB.md](file:///home/vkhang-bui/1.HocViec/projects/pangenom/documents/PGGB.md) và [lo_trinh_hoc_pangenome.md](file:///home/vkhang-bui/1.HocViec/projects/pangenom/documents/lo_trinh_hoc_pangenome.md).
