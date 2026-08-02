@@ -62,7 +62,7 @@ flowchart TD
 ```
 
 1. **Khởi tạo không gian vị trí (Positional Space Construction)**:
-   - Tất cả các chuỗi nucleotide trong tệp FASTA được biểu diễn trên mảng tọa độ 1D liên tục. Mỗi base tại vị trí $p$ trên chuỗi $i$ được định danh duy nhất $Pos(i, p)$.
+   - Tất cả các chuỗi nucleotide trong tệp FASTA được biểu diễn trên mảng tọa độ 1D liên tục. Mỗi base tại vị trí $p$ trên chuỗi $i$ được định danh duy nhất $Pos(i, p)$ (mã hóa chẵn $2p$ cho sợi dương `+`, lẻ $2p+1$ cho sợi âm `-`, nén 2-bit).
 2. **Phép đóng bắc cầu (Transitive Closure via Disjoint-Set Union / Union-Find)**:
    - Chuỗi CIGAR trong tệp PAF chỉ ra các cặp base **khớp chính xác (Match `=` / `M`)**.
    - Nếu $A \sim B$ (base $A$ tương đương base $B$) và $B \sim C$, tính chất bắc cầu kết luận $A \sim C$.
