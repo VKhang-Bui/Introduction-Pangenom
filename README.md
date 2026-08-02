@@ -58,7 +58,7 @@ Introduction-Pangenom/
 *   **Giai đoạn 3:** Trực quan hóa bằng `odgi viz`, `Bandage`, `SequenceTubeMap` và viết script R.
 *   **Giai đoạn 4:** Lập chỉ mục đồ thị, ánh xạ NGS Reads và gọi biến dị cấu trúc (SVs).
 
-Xem chi tiết tại [documents/lo_trinh_hoc_pangenome.md](./home/vkhang-bui/1.HocViec/projects/pangenom/documents/lo_trinh_hoc_pangenome.md).
+Xem chi tiết tại [documents/lo_trinh_hoc_pangenome.md](./documents/lo_trinh_hoc_pangenome.md).
 
 ---
 
