@@ -1,10 +1,10 @@
-# 📖 CẨM NANG HƯỚNG DẪN CÁC CÔNG CỤ THÀNH PHẦN TRONG PGGB PIPELINE
+# CẨM NANG HƯỚNG DẪN CÁC CÔNG CỤ THÀNH PHẦN TRONG PGGB PIPELINE
 
 Tài liệu này tổng hợp hướng dẫn, cơ sở lý thuyết, thuật toán và chi tiết **các tham số mặc định (default parameters)** của từng công cụ sinh tin học riêng lẻ phục vụ cho pipeline **PGGB (Pangenome Graph Builder)**.
 
 ---
 
-## 🛠️ 1. CÔNG CỤ `wfmash` (ALL-VS-ALL MAPPER & WAVEFRONT ALIGNER)
+## 1. CÔNG CỤ `wfmash` (ALL-VS-ALL MAPPER & WAVEFRONT ALIGNER)
 
 ### 1.1. Mục Đích Cốt Lõi
 Công cụ **`wfmash`** (kết hợp giữa *MashMap* và *Wavefront Alignment - WFA*) đảm nhận bước mở đầu trong pipeline PGGB. Mục đích chính của `wfmash` là thực hiện **Alignment tất cả các trình tự với nhau** (tổ hợp tất cả các cặp $N \times (N-1)/2$ giữa các bộ gen đơn bội/contig đầu vào) nhằm xây dựng một pangenome hoàn toàn không phụ thuộc vào hệ gen tham chiếu (*Reference-Free*).
@@ -40,7 +40,7 @@ Công cụ **`wfmash`** (kết hợp giữa *MashMap* và *Wavefront Alignment -
 
 ---
 
-## 🕸️ 2. CÔNG CỤ `seqwish` (VARIATION GRAPH INDUCER)
+## 2. CÔNG CỤ `seqwish` (VARIATION GRAPH INDUCER)
 
 ### 2.1. Mục Đích & Vai Trò
 Công cụ **`seqwish`** đóng vai trò trái tim trong bước chuyển đổi hạ tầng của PGGB. `seqwish` nhận tệp căn chỉnh PAF (`.paf`) từ `wfmash` và tệp chuỗi FASTA ban đầu để **khởi tạo đồ thị biến dị thô (Variation Graph)** hoàn toàn không phụ thuộc vào hệ gen tham chiếu (*Reference-Free*), lưu trữ dưới định dạng chuẩn **GFAv1** (`.gfa`).
@@ -97,7 +97,7 @@ flowchart TD
 
 ---
 
-## 🎨 3. CÔNG CỤ `smoothxg` (POA GRAPH SMOOTHER)
+## 3. CÔNG CỤ `smoothxg` (POA GRAPH SMOOTHER)
 
 ### 3.1. Mục Đích & Vai Trò
 *   Đồ thị thô xuất từ `seqwish` thường gặp hiện tượng "búi mì spaghetti" chằng chịt do vi lặp ngắn. **`smoothxg`** chịu trách nhiệm **làm mịn đồ thị** bằng cách gom các vùng đồng tuyến thành các khối **POA (Partial Order Alignment)** sạch sẽ.
@@ -115,7 +115,7 @@ flowchart TD
 
 ---
 
-## 📊 4. CÔNG CỤ `odgi` (OPTIMIZED DATA-STRUCTURES FOR GRAPH INSPECTION)
+## 4. CÔNG CỤ `odgi` (OPTIMIZED DATA-STRUCTURES FOR GRAPH INSPECTION)
 
 ### 4.1. Mục Đích & Vai Trò
 *   **`odgi`** là bộ công cụ tối ưu hóa dữ liệu đồ thị pangenome, hỗ trợ chuyển đổi định dạng nhị phân `.og`, sắp xếp tọa độ 1D, tính toán thống kê và trực quan hóa biểu đồ 1D/2D.
@@ -128,14 +128,14 @@ flowchart TD
 
 ---
 
-## ✂️ 5. CÔNG CỤ `gfaffix` (GRAPH AFFIX COLLAPSER)
+## 5. CÔNG CỤ `gfaffix` (GRAPH AFFIX COLLAPSER)
 
 ### 5.1. Mục Đích & Vai Trò
 *   **`gfaffix`** thực hiện thu gọn các đoạn nhánh đầu (prefix) và đoạn nhánh đuôi (suffix) dư thừa trùng lặp trên đồ thị GFA sau bước `smoothxg`, giúp giảm tối đa độ phức tạp của đồ thị.
 
 ---
 
-## 🔬 6. CÔNG CỤ `vg` (VARIATION GRAPH TOOLKIT)
+## 6. CÔNG CỤ `vg` (VARIATION GRAPH TOOLKIT)
 
 ### 6.1. Mục Đích & Vai Trò
 *   Bộ công cụ toàn năng phân tích pangenome. Trong PGGB, `vg` chủ yếu đảm nhận nhiệm vụ **Trích xuất biến dị (Variant Calling)** thông qua mô-đun `vg deconstruct`.
@@ -145,7 +145,7 @@ flowchart TD
 
 ---
 
-## 📖 Nguồn Tham Khảo (References)
+## Nguồn Tham Khảo (References)
 
 1. **Broder, A. Z. (1997).** *On the resemblance and containment of documents.* IEEE Compression and Complexity of Sequences, 21–29. [https://doi.org/10.1109/SEQUEN.1997.666900](https://doi.org/10.1109/SEQUEN.1997.666900)
 2. **Marco-Sola, S., et al. (2021).** *The wavefront sequence alignment algorithm (WFA).* Bioinformatics, 37(4), 456–463. [https://doi.org/10.1093/bioinformatics/btaa777](https://doi.org/10.1093/bioinformatics/btaa777)

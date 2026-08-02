@@ -4,7 +4,7 @@ Chào mừng đến với kho lưu trữ nghiên cứu và thực hành về **�
 
 ---
 
-## 👥 Đóng Góp Của Các Thành Viên (Team Contributions)
+## Đóng Góp Của Các Thành Viên (Team Contributions)
 
 | Thành viên | Vai trò | Đóng góp chính |
 | :--- | :--- | :--- |
@@ -15,7 +15,7 @@ Chào mừng đến với kho lưu trữ nghiên cứu và thực hành về **�
 
 ---
 
-## 🎯 Mục Tiêu Dự Án (Project Objectives)
+## Mục Tiêu Dự Án (Project Objectives)
 
 1.  **Lý thuyết nền tảng:** Hiểu sâu bản chất Pangenome, sự khác biệt giữa hệ gen tham chiếu tuyến tính và đồ thị biến dị (Variation Graph - GFA format).
 2.  **Xây dựng Đồ thị (Graph Construction):** Thực hành làm chủ hai luồng thuật toán chính:
@@ -28,7 +28,7 @@ Chào mừng đến với kho lưu trữ nghiên cứu và thực hành về **�
 
 ---
 
-## 📂 Cấu Trúc Thư Mục Dự Án (Repository Structure)
+## Cấu Trúc Thư Mục Dự Án (Repository Structure)
 
 ```text
 Introduction-Pangenom/
@@ -51,18 +51,18 @@ Introduction-Pangenom/
 
 ---
 
-## 🚀 Lộ Trình Thực Hành (Roadmap Quickstart)
+## Lộ Trình Thực Hành (Roadmap Quickstart)
 
 *   **Giai đoạn 1:** Nền tảng tư duy & Chuẩn hóa định dạng PanSN (`<sample>#<haplotype>#<contig>`) cho các file FASTA nấm.
 *   **Giai đoạn 2:** Chạy xây dựng đồ thị Pangenome bằng `PGGB` và `Minigraph-Cactus`.
 *   **Giai đoạn 3:** Trực quan hóa bằng `odgi viz`, `Bandage`, `SequenceTubeMap` và viết script R.
 *   **Giai đoạn 4:** Lập chỉ mục đồ thị, ánh xạ NGS Reads và gọi biến dị cấu trúc (SVs).
 
-👉 Xem chi tiết tại [documents/lo_trinh_hoc_pangenome.md](file:///home/vkhang-bui/1.HocViec/theory_and_resources/pangenom/documents/lo_trinh_hoc_pangenome.md).
+Xem chi tiết tại [documents/lo_trinh_hoc_pangenome.md](file:///home/vkhang-bui/1.HocViec/projects/pangenom/documents/lo_trinh_hoc_pangenome.md).
 
 ---
 
-## 🛠️ Hướng Dẫn Cài Đặt Môi Trường (Environment Setup)
+## Hướng Dẫn Cài Đặt Môi Trường (Environment Setup)
 
 Dưới đây là câu lệnh 1 bước để khởi tạo môi trường làm việc **`shina`** và cài đặt toàn bộ các công cụ Pangenomics & Tin sinh học được sử dụng trong dự án (`PGGB`, `VG`, `ODGI`, `Minigraph`, `Bandage`, `Samtools`, `Biopython`, `R-tidyverse`,...):
 
@@ -86,10 +86,6 @@ conda activate shina
 
 ---
 
-## 📖 Tài Liệu Tham Khảo (References)
+## Tài Liệu Tham Khảo (References)
 
-> 📌 **Danh mục tổng hợp đầy đủ:** Tất cả bài báo khoa học, tài liệu kỹ thuật và liên kết được lưu trữ và cập nhật tại [reference/REFERENCES.md](file:///home/vkhang-bui/1.HocViec/projects/pangenom/reference/REFERENCES.md).
-
-1.  **Matthews, C. A., Watson-Haigh, N. S., Burton, R. A., & Sheppard, A. E. (2024).** *A gentle introduction to pangenomics.* Briefings in Bioinformatics, 25(6), bbae588. [https://doi.org/10.1093/bib/bbae588](https://doi.org/10.1093/bib/bbae588)
-2.  **Garrison, E., Guarracino, A., Heumos, S., et al. (2023).** *Building pangenome graphs.* bioRxiv, 2023.04.05.535718. [https://doi.org/10.1101/2023.04.05.535718](https://doi.org/10.1101/2023.04.05.535718)
-3.  **BioinfOmics INRAE. (2024).** *Giới thiệu hướng dẫn - Cuộc thi lập trình Pangenome Hackathon.*
+Tất cả các bài báo khoa học, tài liệu kỹ thuật, kho mã nguồn GitHub và tệp PDF tham khảo của dự án được lưu trữ và cập nhật đầy đủ tại: [reference/REFERENCES.md](./reference/REFERENCES.md).
