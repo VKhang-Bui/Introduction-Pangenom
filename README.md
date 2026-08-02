@@ -1,4 +1,4 @@
-# Introduction to Pangenomics & Practice (Introduction-Pangenom)
+# Introduction to Pangenomics & Practice
 
 Chào mừng đến với kho lưu trữ nghiên cứu và thực hành về **Đồ thị Hệ gen toàn diện (Pangenome Graphs)**, tập trung vào mô hình sinh học **Nấm (Fungi)** và **Người (Humans)**. Dự án được xây dựng nhằm cung cấp lý thuyết nền tảng, kịch bản dòng lệnh phân tích và quy trình trực quan hóa biểu đồ phục vụ báo cáo khoa học.
 
