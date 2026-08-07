@@ -1,0 +1,24 @@
+total 5.6M
+-rw-rw-r-- 1 vkhang-bui vkhang-bui  26K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.08-07-2026_180544.log
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 1.5K Aug  7 18:05 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.08-07-2026_180544.params.yml
+-rw-rw-r-- 1 vkhang-bui vkhang-bui  91K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.gfa.gz
+-rw-rw-r-- 1 vkhang-bui vkhang-bui  37K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.grch38.vcf.gz
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 4.4K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.grch38.vcf.stats
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 108K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.gz
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 167K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.lay
+-rw-rw-r-- 1 vkhang-bui vkhang-bui  36K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.lay.draw.png
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 387K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.lay.draw_multiqc.png
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 173K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.lay.tsv.gz
+-rw-rw-r-- 1 vkhang-bui vkhang-bui  749 Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.stats.yaml
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 1.5K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_O_multiqc.png
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 2.6K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_depth_multiqc.png
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 2.4K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_inv_multiqc.png
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 3.6K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_multiqc.png
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 5.5K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_pos_multiqc.png
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 3.4K Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_uncalled_multiqc.png
+-rw-rw-r-- 1 vkhang-bui vkhang-bui   20 Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.fix.affixes.tsv.gz
+-rw-rw-r-- 1 vkhang-bui vkhang-bui  743 Aug  7 18:06 DRB1-3123.fa.gz.e8de02e.11fba48.seqwish.og.stats.yaml
+-rw-rw-r-- 1 vkhang-bui vkhang-bui  22K Aug  7 18:05 DRB1-3123.fa.gz.e8de02e.alignments.wfmash.paf.gz
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 3.1K Aug  7 18:06 multiqc_config.yaml
+drwxrwxr-x 2 vkhang-bui vkhang-bui 4.0K Aug  7 18:06 multiqc_data
+-rw-rw-r-- 1 vkhang-bui vkhang-bui 4.5M Aug  7 18:06 multiqc_report.html

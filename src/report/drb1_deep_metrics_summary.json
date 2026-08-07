@@ -1,0 +1,116 @@
+{
+  "graph_gfa_topology": {
+    "total_nodes": 4854,
+    "total_graph_bp": 21919,
+    "total_paths": 12,
+    "core_nodes_count": 1051,
+    "core_nodes_bp": 7914,
+    "core_bp_pct": 36.11,
+    "shell_nodes_count": 3787,
+    "shell_nodes_bp": 12995,
+    "shell_bp_pct": 59.29,
+    "unique_nodes_count": 16,
+    "unique_nodes_bp": 1010,
+    "unique_bp_pct": 4.61,
+    "depth_distribution": {
+      "10": 209,
+      "4": 391,
+      "11": 69,
+      "7": 467,
+      "8": 215,
+      "3": 704,
+      "9": 717,
+      "2": 388,
+      "12": 1051,
+      "5": 481,
+      "1": 16,
+      "6": 146
+    },
+    "mean_jaccard_similarity": 0.5786,
+    "min_jaccard_similarity": 0.3788,
+    "max_jaccard_similarity": 1.0
+  },
+  "image_metadata": {
+    "data/intern/bad_plot_1_overaligned.png": {
+      "size_bytes": 3170560,
+      "size_kb": 3096.2
+    },
+    "data/intern/bad_plot_2_underaligned.png": {
+      "size_bytes": 2087296,
+      "size_kb": 2038.4
+    },
+    "data/intern/bad_plot_3_repeat_noise.png": {
+      "size_bytes": 3137492,
+      "size_kb": 3064.0
+    },
+    "data/intern/hla_all_community_plot.png": {
+      "size_bytes": 3087414,
+      "size_kb": 3015.1
+    },
+    "output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.lay.draw.png": {
+      "size_bytes": 36061,
+      "size_kb": 35.2
+    },
+    "output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.lay.draw_multiqc.png": {
+      "size_bytes": 395726,
+      "size_kb": 386.5
+    },
+    "output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_O_multiqc.png": {
+      "size_bytes": 1451,
+      "size_kb": 1.4
+    },
+    "output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_depth_multiqc.png": {
+      "size_bytes": 2651,
+      "size_kb": 2.6
+    },
+    "output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_inv_multiqc.png": {
+      "size_bytes": 2433,
+      "size_kb": 2.4
+    },
+    "output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_multiqc.png": {
+      "size_bytes": 3681,
+      "size_kb": 3.6
+    },
+    "output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_pos_multiqc.png": {
+      "size_bytes": 5562,
+      "size_kb": 5.4
+    },
+    "output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_uncalled_multiqc.png": {
+      "size_bytes": 3425,
+      "size_kb": 3.3
+    }
+  },
+  "multiqc_general_stats": [
+    {
+      "DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.grch38.vcf": {
+        "number_of_samples": 11,
+        "number_of_records": 1182,
+        "number_of_no-ALTs": 0,
+        "number_of_SNPs": 1012,
+        "number_of_MNPs": 173,
+        "number_of_indels": 105,
+        "number_of_others": 32,
+        "number_of_multiallelic_sites": 222,
+        "number_of_multiallelic_SNP_sites": 66,
+        "ts": 557,
+        "tv": 414,
+        "tstv": 1.35,
+        "ts_1st_ALT": 524,
+        "tv_1st_ALT": 372,
+        "tstv_1st_ALT": 1.41,
+        "substitution_type_A>C": 59,
+        "substitution_type_A>G": 113,
+        "substitution_type_A>T": 51,
+        "substitution_type_C>A": 58,
+        "substitution_type_C>G": 62,
+        "substitution_type_C>T": 171,
+        "substitution_type_G>A": 145,
+        "substitution_type_G>C": 48,
+        "substitution_type_G>T": 60,
+        "substitution_type_T>A": 34,
+        "substitution_type_T>C": 128,
+        "substitution_type_T>G": 42
+      }
+    }
+  ]
+}

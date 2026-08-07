@@ -1,0 +1,42 @@
+=================================================================
+BÁO CÁO PHÂN TÍCH ĐỔI MỚI SỐ LIỆU & HÌNH ẢNH ĐỒ THỊ PANGENOME HLA-DRB1
+=================================================================
+
+1. PHÂN TÍCH CHUYÊN SÂU TOPOLOGY & ĐỘ BAO PHỦ NUCLEOTIDE (GFA):
+   • Tổng số Nodes:          4854
+   • Tổng dung lượng Đồ thị: 21919 bp
+   • Số lượng Haplotypes:   12
+   • Vùng Core (12/12):      1051 nodes | 7914 bp (36.11%)
+   • Vùng Shell (2..11):     3787 nodes | 12995 bp (59.29%)
+   • Vùng Unique (1/12):     16 nodes | 1010 bp (4.61%)
+   • Chỉ số Tương đồng Jaccard (Path Similarity):
+     - Trực quan Trung bình:  0.5786
+     - Thấp nhất (Phân dị nhất): 0.3788
+     - Cao nhất (Tương đồng nhất): 1.0
+   • Phân bố Độ bao phủ (Depth Distribution):
+     - Haplotype Depth 1: 16 nodes
+     - Haplotype Depth 2: 388 nodes
+     - Haplotype Depth 3: 704 nodes
+     - Haplotype Depth 4: 391 nodes
+     - Haplotype Depth 5: 481 nodes
+     - Haplotype Depth 6: 146 nodes
+     - Haplotype Depth 7: 467 nodes
+     - Haplotype Depth 8: 215 nodes
+     - Haplotype Depth 9: 717 nodes
+     - Haplotype Depth 10: 209 nodes
+     - Haplotype Depth 11: 69 nodes
+     - Haplotype Depth 12: 1051 nodes
+
+2. PHÂN TÍCH SIÊU DỮ LIỆU CÁC HÌNH ẢNH SƠ ĐỒ SẢN XUẤT (.PNG):
+   • [data/intern/bad_plot_1_overaligned.png]: 3096.2 KB
+   • [data/intern/bad_plot_2_underaligned.png]: 2038.4 KB
+   • [data/intern/bad_plot_3_repeat_noise.png]: 3064.0 KB
+   • [data/intern/hla_all_community_plot.png]: 3015.1 KB
+   • [output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.lay.draw.png]: 35.2 KB
+   • [output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.lay.draw_multiqc.png]: 386.5 KB
+   • [output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_O_multiqc.png]: 1.4 KB
+   • [output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_depth_multiqc.png]: 2.6 KB
+   • [output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_inv_multiqc.png]: 2.4 KB
+   • [output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_multiqc.png]: 3.6 KB
+   • [output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_pos_multiqc.png]: 5.4 KB
+   • [output/image/DRB1-3123.fa.gz.e8de02e.11fba48.89cf512.smooth.final.og.viz_uncalled_multiqc.png]: 3.3 KB
