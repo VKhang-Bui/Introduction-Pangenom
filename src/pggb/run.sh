@@ -9,7 +9,7 @@ n_haplo=$3
 
 mkdir -p "$output"
 
-export PATH=/home/vkhang-bui/miniforge3/envs/shina/bin:$PATH
+export PATH=/home/vkhang-bui/miniforge3/envs/pggb_env/bin:$PATH
 
 pggb \
   -i "$input" \
