@@ -19,7 +19,6 @@ DIST_DIR="${OUT_DIR}/distances"
 mkdir -p "${OUT_DIR}" "${PART_DIR}" "${DIST_DIR}"
 
 COMBINED_GZ="${OUT_DIR}/${PREFIX}_all.fasta.gz"
-JSON_PARAMS="${OUT_DIR}/${PREFIX}_loci_params.json"
 DIVERGENCE_TXT="${OUT_DIR}/${PREFIX}_divergence.txt"
 LOG_FILE="${OUT_DIR}/${PREFIX}_divergence.log"
 
@@ -28,21 +27,23 @@ echo "[START] PANGENOME SEQUENCE PARTITIONING & DIVERGENCE ESTIMATION"
 echo " RAW Dir: $RAW_DIR | Prefix: $PREFIX | Output: $OUT_DIR"
 echo "================================================================="
 
-
 echo "[1/4] Normalizing PanSN headers and combining FASTA files..."
 COMBINED_FA="${OUT_DIR}/${PREFIX}_all.fasta"
 rm -f "${COMBINED_FA}" "${COMBINED_GZ}" "${COMBINED_GZ}.fai"
 
-for f in "${RAW_DIR}"/*.fa "${RAW_DIR}"/*.fasta; do
+for f in "${RAW_DIR}"/*.fa "${RAW_DIR}"/*.fasta "${RAW_DIR}"/*.fa.gz "${RAW_DIR}"/*.fasta.gz; do
     if [[ -f "$f" ]]; then
-        sample_name=$(basename "$f" | sed -E 's/\.(fa|fasta)$//')
-        sed -e "s/^>/>${sample_name}#1#/g" -e 's/ .*//g' "$f" >> "${COMBINED_FA}"
+        sample_name=$(basename "$f" | sed -E 's/\.(fa|fasta)(\.gz)?$//')
+        if [[ "$f" == *.gz ]]; then
+            zcat "$f" | sed -e "s/^>/>${sample_name}#1#/g" -e 's/ .*//g' >> "${COMBINED_FA}"
+        else
+            sed -e "s/^>/>${sample_name}#1#/g" -e 's/ .*//g' "$f" >> "${COMBINED_FA}"
+        fi
     fi
 done
 
 bgzip -f -@ 4 "${COMBINED_FA}"
 samtools faidx "${COMBINED_GZ}"
-
 
 echo "[2/4] Partitioning sequences by contig/locus..."
 mapfile -t CHROM_LIST < <(cut -f 1 "${COMBINED_GZ}.fai" | cut -f 1 -d '#' | sort | uniq)
@@ -54,21 +55,17 @@ for CHROM in "${CHROM_LIST[@]}"; do
     samtools faidx "${CHR_FASTA}"
 done
 
-
 echo "[3/4] Estimating sequence divergence with Mash..."
 echo -e "Locus\tNum_Samples\tMean_Length_bp\tMax_Divergence\tExact_Identity_Limit\tRecommended_P\tRecommended_S" > "${DIVERGENCE_TXT}"
 
 python3 -c "
-import glob, os, math, json
+import os, math
 
 chrom_list = '''${CHROM_LIST[*]}'''.split()
 part_dir = '${PART_DIR}'
 dist_dir = '${DIST_DIR}'
 prefix = '${PREFIX}'
-json_out = '${JSON_PARAMS}'
 div_txt = '${DIVERGENCE_TXT}'
-
-params_dict = {}
 
 for chrom in chrom_list:
     chr_fasta = os.path.join(part_dir, f'{prefix}_{chrom}.fasta.gz')
@@ -104,31 +101,10 @@ for chrom in chrom_list:
     exact_limit = 100.0 - (max_d * 100.0)
     rec_p = max(70, math.floor(exact_limit - 3.0)) if max_d > 0 else 95
 
-    params_dict[chrom] = {
-        'locus': chrom,
-        'fasta_path': chr_fasta,
-        'num_samples': seq_count,
-        'mean_length_bp': int(mean_l),
-        'max_divergence': round(max_d, 6),
-        'exact_identity_limit': round(exact_limit, 2),
-        'p_param': rec_p,
-        's_param': opt_s,
-        'vcf_ref': 'grch38'
-    }
-
     with open(div_txt, 'a') as f:
         f.write(f'{chrom}\t{seq_count}\t{int(mean_l)}\t{max_d:.6f}\t{exact_limit:.2f}\t{rec_p}\t{opt_s}\n')
-
-with open(json_out, 'w') as f:
-    json.dump(params_dict, f, indent=2)
-
-if prefix != 'hla_loci_params':
-    hla_json = os.path.join('${OUT_DIR}', 'hla_loci_params.json')
-    with open(hla_json, 'w') as f:
-        json.dump(params_dict, f, indent=2)
 "
 
-LOG_FILE="${OUT_DIR}/${PREFIX}_divergence.log"
 EXEC_TIME=$(date '+%Y-%m-%d %H:%M:%S')
 
 cat << EOF > "${LOG_FILE}"
@@ -146,7 +122,6 @@ Total Loci Processed: ${#CHROM_LIST[@]}
   • Partition FASTAs:  ${PART_DIR}/
   • Mash Distances:    ${DIST_DIR}/
   • Divergence Table:  ${DIVERGENCE_TXT}
-  • Parameter JSON:    ${JSON_PARAMS}
 
 [SUMMARY METRICS TABLE]
 $(cat "${DIVERGENCE_TXT}" | column -t)
@@ -159,6 +134,5 @@ echo "[SUMMARY] PANGENOME PARTITIONING & DIVERGENCE ESTIMATION COMPLETE"
 echo "  • Total Loci Partitioned:  ${#CHROM_LIST[@]}"
 echo "  • Divergence Summary TXT:  ${DIVERGENCE_TXT}"
 echo "  • Execution Log Output:    ${LOG_FILE}"
-echo "  • Parameter JSON Output:   ${JSON_PARAMS}"
 echo "================================================================="
 cat "${DIVERGENCE_TXT}" | column -t

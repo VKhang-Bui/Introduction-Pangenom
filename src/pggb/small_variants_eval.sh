@@ -3,29 +3,56 @@
 # ==============================================================================
 # small_variants_eval.sh
 # Universal Small Variants Evaluation Module (Phases 3-5)
-# Includes sleek 4-line terminal progress display and execution logging
-# Usage: ./small_variants_eval.sh [INPUT_FASTA_OR_LOCUS] [PGGB_DIR] [REF_NAME] [OUT_DIR]
-# Example: ./small_variants_eval.sh DRB1-3123 data/intern/small_variants/02_pggb grch38 data/intern/small_variants
+# Dual Support: Named Flags (-i, -g, -r, -o) & Fallback Positional Arguments
+# Usage Style 1 (Flags):      ./small_variants_eval.sh -i <INPUT_FASTA> -g <PGGB_DIR> -r <REF> -o <OUT_DIR>
+# Usage Style 2 (Positional): ./small_variants_eval.sh [INPUT_FASTA] [PGGB_DIR] [REF] [OUT_DIR]
 # ==============================================================================
 
 set -eo pipefail
 
-INPUT_ARG="${1:-DRB1-3123}"
-PGGB_DIR="${2:-data/intern/small_variants/02_pggb}"
-REF_NAME="${3:-grch38}"
-OUT_DIR="${4:-data/intern/small_variants}"
+# Default values
+INPUT_ARG="DRB1-3123"
+PGGB_DIR="data/intern/small_variants/02_pggb"
+REF_ARG="grch38"
+OUT_DIR="data/intern/small_variants"
 THREADS=8
 
-# Auto-discover input FASTA file if locus name is provided
+# Fallback Positional arguments (if first arg does not start with -)
+if [[ $# -gt 0 && "$1" != -* ]]; then
+    INPUT_ARG="${1:-$INPUT_ARG}"
+    PGGB_DIR="${2:-$PGGB_DIR}"
+    REF_ARG="${3:-$REF_ARG}"
+    OUT_DIR="${4:-$OUT_DIR}"
+fi
+
+# Named flags (-i, -g, -r, -o)
+while getopts "i:g:r:o:h" opt; do
+  case $opt in
+    i) INPUT_ARG="$OPTARG" ;;
+    g) PGGB_DIR="$OPTARG" ;;
+    r) REF_ARG="$OPTARG" ;;
+    o) OUT_DIR="$OPTARG" ;;
+    h)
+       echo "Usage (Flags):      $0 -i <INPUT_FASTA_OR_LOCUS> -g <PGGB_DIR> -r <REF_FA_OR_NAME> -o <OUT_DIR>"
+       echo "Usage (Positional): $0 [INPUT_FASTA_OR_LOCUS] [PGGB_DIR] [REF_FA_OR_NAME] [OUT_DIR]"
+       exit 0
+       ;;
+    *) ;;
+  esac
+done
+
+# Resolve input FASTA file using wildcard search if locus name is provided
 INPUT_FASTA="$INPUT_ARG"
 if [[ ! -f "$INPUT_FASTA" ]]; then
-    if [[ -f "data/intern/partitions/hla_${INPUT_ARG}.fasta.gz" ]]; then
-        INPUT_FASTA="data/intern/partitions/hla_${INPUT_ARG}.fasta.gz"
-    elif [[ -f "data/intern/partitions/${INPUT_ARG}.fasta.gz" ]]; then
-        INPUT_FASTA="data/intern/partitions/${INPUT_ARG}.fasta.gz"
-    elif [[ -f "data/raw/HLA/${INPUT_ARG}.fa" ]]; then
-        INPUT_FASTA="data/raw/HLA/${INPUT_ARG}.fa"
+    FASTA_MATCH=$(ls data/intern/partitions/*"${INPUT_ARG}"*.fasta.gz data/raw/*/*"${INPUT_ARG}"*.fa 2>/dev/null | head -n 1 || true)
+    if [[ -n "$FASTA_MATCH" && -f "$FASTA_MATCH" ]]; then
+        INPUT_FASTA="$FASTA_MATCH"
     fi
+fi
+
+if [[ ! -f "$INPUT_FASTA" ]]; then
+    echo "Error: Input FASTA file '$INPUT_FASTA' does not exist."
+    exit 1
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -47,14 +74,22 @@ prepare_reference() {
     fi
     samtools faidx "$PREP_FASTA"
 
-    REF_FULL_NAME=$(cut -f 1 "${PREP_FASTA}.fai" | grep "$REF_NAME" | head -n 1 || true)
-    if [[ -z "$REF_FULL_NAME" ]]; then
-        REF_FULL_NAME=$(head -n 1 "${PREP_FASTA}.fai" | cut -f 1)
-    fi
+    # Support direct reference FASTA path or sequence name matching
+    if [[ -f "$REF_ARG" ]]; then
+        REF_FA="$DIR_INPUT/ref.fa"
+        cp "$REF_ARG" "$REF_FA"
+        samtools faidx "$REF_FA"
+        REF_FULL_NAME=$(head -n 1 "${REF_FA}.fai" | cut -f 1)
+    else
+        REF_FULL_NAME=$(cut -f 1 "${PREP_FASTA}.fai" | grep "$REF_ARG" | head -n 1 || true)
+        if [[ -z "$REF_FULL_NAME" ]]; then
+            REF_FULL_NAME=$(head -n 1 "${PREP_FASTA}.fai" | cut -f 1)
+        fi
 
-    REF_FA="$DIR_INPUT/ref.fa"
-    samtools faidx "$PREP_FASTA" "$REF_FULL_NAME" > "$REF_FA"
-    samtools faidx "$REF_FA"
+        REF_FA="$DIR_INPUT/ref.fa"
+        samtools faidx "$PREP_FASTA" "$REF_FULL_NAME" > "$REF_FA"
+        samtools faidx "$REF_FA"
+    fi
 }
 
 graph_variant_calling() {
@@ -172,13 +207,14 @@ cleanup_intermediates() {
 }
 
 main() {
+    mkdir -p "$OUT_DIR"
     EVAL_LOG="${OUT_DIR}/small_variants_evaluation.log"
 
     echo "================================================================="
     echo "[EVAL] SMALL VARIANTS BENCHMARK PIPELINE"
     echo "  • Input FASTA:    $INPUT_FASTA"
     echo "  • PGGB Graph:     $PGGB_DIR"
-    echo "  • Reference:      $REF_NAME"
+    echo "  • Reference:      $REF_ARG"
     echo "  • Output Dir:     $OUT_DIR"
     echo "  • Execution Log:  $EVAL_LOG"
     echo "================================================================="
