@@ -120,13 +120,15 @@ Total Loci Processed: ${#CHROM_LIST[@]}
 
 [OUTPUT ASSET LOCATIONS]
   • Partition FASTAs:  ${PART_DIR}/
-  • Mash Distances:    ${DIST_DIR}/
   • Divergence Table:  ${DIVERGENCE_TXT}
 
 [SUMMARY METRICS TABLE]
 $(cat "${DIVERGENCE_TXT}" | column -t)
 =================================================================
 EOF
+
+# Automatic cleanup of intermediate combined FASTA and Mash distance folder
+rm -rf "${DIST_DIR}" "${COMBINED_FA}" "${COMBINED_GZ}" "${COMBINED_GZ}.fai"
 
 echo ""
 echo "================================================================="

@@ -6,10 +6,15 @@ Tài liệu này ghi chép lại toàn bộ tiến độ làm việc, các cột
 
 ## 1. Nhật Ký Tiến Độ (Work Log)
 
-### Ngày 08/08/2026: Tinh Gọn Kịch Bản Tiền Xử Lý Phân Đoạn & Loại Bỏ Hoàn Toàn Tệp JSON Dư Thừa
+### Ngày 08/08/2026: Tinh Gọn Kịch Bản, Chuẩn Hóa Thư Mục Locus & Tự Động Dọn Dẹp Rác
 * **Công việc đã hoàn thành:**
-  1. Loại bỏ toàn bộ phần mã khởi tạo tệp JSON trong [src/pggb/pangenome_partitioning_pipeline.sh](file:///home/vkhang-bui/1.HocViec/projects/pangenom/src/pggb/pangenome_partitioning_pipeline.sh). Kịch bản chỉ tập trung tính toán chỉ số Mash divergence và xuất tệp bảng định dạng cột [hla_divergence.txt](file:///home/vkhang-bui/1.HocViec/projects/pangenom/data/intern/hla_divergence.txt) & tệp nhật ký [hla_divergence.log](file:///home/vkhang-bui/1.HocViec/projects/pangenom/data/intern/hla_divergence.log).
-  2. Đồng bộ hóa toàn bộ quy trình hạ nguồn ([run_pggb_params.sh](file:///home/vkhang-bui/1.HocViec/projects/pangenom/src/pggb/run_pggb_params.sh), [small_variants_eval.sh](file:///home/vkhang-bui/1.HocViec/projects/pangenom/src/pggb/small_variants_eval.sh), [main.sh](file:///home/vkhang-bui/1.HocViec/projects/pangenom/main.sh)) sử dụng `awk` đọc tham số trực tiếp từ tệp bảng `.txt`, giúp hệ thống đạt hiệu năng tối đa và giảm thiểu việc tạo tệp trung gian dư thừa.
+  1. Loại bỏ toàn bộ phần mã khởi tạo tệp JSON trong [src/pggb/pangenome_partitioning_pipeline.sh](file:///home/vkhang-bui/1.HocViec/projects/pangenom/src/pggb/pangenome_partitioning_pipeline.sh). Kịch bản xuất tệp bảng định dạng cột [hla_divergence.txt](file:///home/vkhang-bui/1.HocViec/projects/pangenom/data/intern/hla_divergence.txt) & tệp nhật ký [hla_divergence.log](file:///home/vkhang-bui/1.HocViec/projects/pangenom/data/intern/hla_divergence.log).
+  2. Bổ sung tính năng tự động dọn dẹp các tệp/thư mục trung gian dư thừa (`distances/`, `hla_all.fasta*`, `01_input/`, `03_nucmer/`, `04_vcfeval/`).
+  3. Chuẩn hóa cấu trúc thư mục đầu ra tối giản tại `data/intern/[TÊN_LOCUS]/` chỉ lưu giữ các sản phẩm quan trọng:
+     * `02_pggb/`: Đồ thị PGGB (`*.final.gfa`, `*.final.og`).
+     * `05_plots/`: Biểu đồ đánh giá (`precision_recall_f1.png`).
+     * `statistics.tsv`: Bảng chỉ số Precision, Recall, F1-Score.
+     * `small_variants_evaluation.log`: Tệp nhật ký chi tiết quá trình đánh giá.
 
 ### Ngày 28/07/2026: Chuẩn Hóa Cẩm Nang Kỹ Thuật Đầu Vào Cho PGGB
 * **Công việc đã hoàn thành:**

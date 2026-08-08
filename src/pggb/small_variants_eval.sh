@@ -57,11 +57,11 @@ fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-DIR_INPUT="$OUT_DIR/01_input"
+DIR_INPUT="$OUT_DIR/input"
 DIR_PGGB="$PGGB_DIR"
-DIR_NUCMER="$OUT_DIR/03_nucmer"
-DIR_VCFEVAL="$OUT_DIR/04_vcfeval"
-DIR_PLOTS="$OUT_DIR/05_plots"
+DIR_NUCMER="$OUT_DIR/nucmer"
+DIR_VCFEVAL="$OUT_DIR/vcfeval"
+DIR_PLOTS="$OUT_DIR/plots"
 
 prepare_reference() {
     mkdir -p "$DIR_INPUT" "$DIR_NUCMER" "$DIR_VCFEVAL" "$DIR_PLOTS"
@@ -179,7 +179,7 @@ benchmark_eval() {
             -o "$EVAL_OUT" >/dev/null 2>&1 || true
     done
 
-    STAT_FILE="$DIR_VCFEVAL/statistics.tsv"
+    STAT_FILE="$OUT_DIR/statistics.tsv"
     echo -e "contig\tprecision\trecall\tf1.score" > "$STAT_FILE"
 
     for SUMMARY in "$DIR_VCFEVAL"/*_eval/summary.txt; do
@@ -200,10 +200,8 @@ benchmark_eval() {
 }
 
 cleanup_intermediates() {
-    rm -f "$DIR_INPUT"/input.fa.gz "$DIR_INPUT"/input.fa.gz.*
-    rm -f "$DIR_NUCMER"/*.delta "$DIR_NUCMER"/*.var.txt
+    rm -rf "$DIR_INPUT" "$DIR_NUCMER" "$DIR_VCFEVAL"
     rm -f "$DIR_PGGB"/pggb_raw.vcf.gz
-    rm -f "$DIR_VCFEVAL"/*_callable.bed
 }
 
 main() {
@@ -260,10 +258,10 @@ main() {
     echo -ne "\033[4A"
     print_status
 
-    # Phase 5: Cleanup
+    # Phase 5: Cleanup 01_input, 03_nucmer, 04_vcfeval
     cleanup_intermediates
 
-    STAT_FILE="$DIR_VCFEVAL/statistics.tsv"
+    STAT_FILE="$OUT_DIR/statistics.tsv"
     PLOT_PNG="$DIR_PLOTS/precision_recall_f1.png"
 
     echo ""
