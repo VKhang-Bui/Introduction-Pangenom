@@ -3,7 +3,7 @@
 # ==============================================================================
 # small_variants_eval.sh
 # Universal Small Variants Evaluation Module (Phases 3-5)
-# Includes automatic FASTA discovery, failure handling, and execution logging
+# Includes sleek 4-line terminal progress display and execution logging
 # Usage: ./small_variants_eval.sh [INPUT_FASTA_OR_LOCUS] [PGGB_DIR] [REF_NAME] [OUT_DIR]
 # Example: ./small_variants_eval.sh DRB1-3123 data/intern/small_variants/02_pggb grch38 data/intern/small_variants
 # ==============================================================================
@@ -106,7 +106,7 @@ benchmark_eval() {
     rm -rf "$DIR_VCFEVAL"/*_eval
     REF_SDF="$DIR_VCFEVAL/ref.sdf"
     rm -rf "$REF_SDF"
-    rtg format -o "$REF_SDF" "$REF_FA"
+    rtg format -o "$REF_SDF" "$REF_FA" >/dev/null 2>&1
 
     DIST=1000
 
@@ -161,41 +161,7 @@ benchmark_eval() {
     done
 
     PLOT_PNG="$DIR_PLOTS/precision_recall_f1.png"
-    Rscript "$SCRIPT_DIR/plot_small_variants.R" "$STAT_FILE" "$PLOT_PNG"
-
-    LOG_FILE="${OUT_DIR}/small_variants_evaluation.log"
-    EXEC_TIME=$(date '+%Y-%m-%d %H:%M:%S')
-
-    cat << EOF > "${LOG_FILE}"
-=================================================================
- SMALL VARIANTS BENCHMARK EVALUATION LOG
-=================================================================
-Execution Timestamp:  ${EXEC_TIME}
-Pipeline Script:      small_variants_eval.sh
-Input FASTA:          ${INPUT_FASTA}
-PGGB Directory:       ${PGGB_DIR}
-Reference Name:       ${REF_FULL_NAME}
-Output Directory:     ${OUT_DIR}
-
-[OUTPUT ASSET LOCATIONS]
-  • Benchmark Plot:   ${PLOT_PNG}
-  • Summary Table:    ${STAT_FILE}
-  • Baseline VCFs:    ${DIR_NUCMER}/
-  • PGGB Contig VCFs: ${DIR_PGGB}/
-
-[BENCHMARK SUMMARY METRICS]
-$(cat "${STAT_FILE}" | column -t)
-=================================================================
-EOF
-
-    echo ""
-    echo "================================================================="
-    echo " Evaluation Complete!"
-    echo " Summary Table:    $STAT_FILE"
-    echo " Execution Log:    $LOG_FILE"
-    echo " Benchmark Plot:   $PLOT_PNG"
-    echo "================================================================="
-    cat "${STAT_FILE}" | column -t
+    Rscript "$SCRIPT_DIR/plot_small_variants.R" "$STAT_FILE" "$PLOT_PNG" >/dev/null 2>&1
 }
 
 cleanup_intermediates() {
@@ -206,11 +172,74 @@ cleanup_intermediates() {
 }
 
 main() {
-    prepare_reference
-    graph_variant_calling
-    nucmer_baseline
-    benchmark_eval
+    EVAL_LOG="${OUT_DIR}/small_variants_evaluation.log"
+
+    echo "================================================================="
+    echo "[EVAL] SMALL VARIANTS BENCHMARK PIPELINE"
+    echo "  • Input FASTA:    $INPUT_FASTA"
+    echo "  • PGGB Graph:     $PGGB_DIR"
+    echo "  • Reference:      $REF_NAME"
+    echo "  • Output Dir:     $OUT_DIR"
+    echo "  • Execution Log:  $EVAL_LOG"
+    echo "================================================================="
+
+    status_prep="[Running... ⏳]"
+    status_calling="[Waiting...]"
+    status_nucmer="[Waiting...]"
+    status_rtg="[Waiting...]"
+
+    print_status() {
+        echo -e " 1/4  Prep Reference:   $status_prep"
+        echo -e " 2/4  Graph Calling:    $status_calling"
+        echo -e " 3/4  Nucmer Baseline:  $status_nucmer"
+        echo -e " 4/4  RTG Benchmarking: $status_rtg"
+    }
+
+    print_status
+
+    # Phase 1: Reference prep
+    prepare_reference > "$EVAL_LOG" 2>&1
+    status_prep="[Completed ✔]"
+    status_calling="[Running... ⏳]"
+    echo -ne "\033[4A"
+    print_status
+
+    # Phase 2: Graph variant calling
+    graph_variant_calling >> "$EVAL_LOG" 2>&1
+    status_calling="[Completed ✔]"
+    status_nucmer="[Running... ⏳]"
+    echo -ne "\033[4A"
+    print_status
+
+    # Phase 3: Nucmer baseline
+    nucmer_baseline >> "$EVAL_LOG" 2>&1
+    status_nucmer="[Completed ✔]"
+    status_rtg="[Running... ⏳]"
+    echo -ne "\033[4A"
+    print_status
+
+    # Phase 4: Benchmark evaluation
+    benchmark_eval >> "$EVAL_LOG" 2>&1
+    status_rtg="[Completed ✔]"
+    echo -ne "\033[4A"
+    print_status
+
+    # Phase 5: Cleanup
     cleanup_intermediates
+
+    STAT_FILE="$DIR_VCFEVAL/statistics.tsv"
+    PLOT_PNG="$DIR_PLOTS/precision_recall_f1.png"
+
+    echo ""
+    echo "================================================================="
+    echo "[SUCCESS] Benchmark Evaluation Completed!"
+    echo "  • Summary Table:  $STAT_FILE"
+    echo "  • Benchmark Plot: $PLOT_PNG"
+    echo "  • Execution Log:  $EVAL_LOG"
+    echo "================================================================="
+    if [[ -f "$STAT_FILE" ]]; then
+        cat "$STAT_FILE" | column -t
+    fi
 }
 
 main "$@"
