@@ -2,7 +2,7 @@
 
 # ==============================================================================
 # pangenome_partitioning_pipeline.sh
-# Sequence Partitioning & Divergence Estimation Pipeline
+# Universal, Organism-Agnostic Sequence Partitioning & Divergence Estimation
 # Based directly on official PGGB Divergence Estimation Tutorial standard
 # Usage: ./pangenome_partitioning_pipeline.sh [RAW_DIR] [PREFIX] [OUT_DIR]
 # Example: ./pangenome_partitioning_pipeline.sh data/raw/HLA hla data/intern
@@ -27,18 +27,36 @@ echo "[START] PANGENOME SEQUENCE PARTITIONING & DIVERGENCE ESTIMATION"
 echo " RAW Dir: $RAW_DIR | Prefix: $PREFIX | Output: $OUT_DIR"
 echo "================================================================="
 
-echo "[1/4] Normalizing PanSN headers and combining FASTA files..."
+echo "[1/4] Normalizing PanSN headers (General Rule) and combining FASTA files..."
 COMBINED_FA="${OUT_DIR}/${PREFIX}_all.fasta"
 rm -f "${COMBINED_FA}" "${COMBINED_GZ}" "${COMBINED_GZ}.fai"
 
 for f in "${RAW_DIR}"/*.fa "${RAW_DIR}"/*.fasta "${RAW_DIR}"/*.fa.gz "${RAW_DIR}"/*.fasta.gz; do
     if [[ -f "$f" ]]; then
-        sample_name=$(basename "$f" | sed -E 's/\.(fa|fasta)(\.gz)?$//')
-        if [[ "$f" == *.gz ]]; then
-            zcat "$f" | sed -e "s/^>/>${sample_name}#1#/g" -e 's/ .*//g' >> "${COMBINED_FA}"
-        else
-            sed -e "s/^>/>${sample_name}#1#/g" -e 's/ .*//g' "$f" >> "${COMBINED_FA}"
-        fi
+        locus_name=$(basename "$f" | sed -E 's/\.(fa|fasta)(\.gz)?$//')
+        
+        python3 -c "
+import sys, gzip
+
+file_path = '$f'
+locus = '$locus_name'
+
+op = gzip.open if file_path.endswith('.gz') else open
+with op(file_path, 'rt') as f_in:
+    for line in f_in:
+        if line.startswith('>'):
+            header = line[1:].strip()
+            # 1. If already valid PanSN format (sample#haplotype#contig), keep intact
+            if header.count('#') >= 2:
+                sys.stdout.write(f'>{header}\n')
+            else:
+                # 2. General PanSN rule: sample_id#1#locus_contig
+                raw_id = header.split()[0]
+                clean_sample = raw_id.replace('/', '_').replace(':', '_').replace('|', '_').strip('_')
+                sys.stdout.write(f'>{clean_sample}#1#{locus}\n')
+        else:
+            sys.stdout.write(line)
+" >> "${COMBINED_FA}"
     fi
 done
 
@@ -46,11 +64,22 @@ bgzip -f -@ 4 "${COMBINED_FA}"
 samtools faidx "${COMBINED_GZ}"
 
 echo "[2/4] Partitioning sequences by contig/locus..."
-mapfile -t CHROM_LIST < <(cut -f 1 "${COMBINED_GZ}.fai" | cut -f 1 -d '#' | sort | uniq)
+# Detect locus names from PanSN 3rd field (sample#hap#locus) or 1st field fallback
+mapfile -t CHROM_LIST < <(cut -f 1 "${COMBINED_GZ}.fai" | cut -f 3 -d '#' | sort | uniq)
+
+if [[ ${#CHROM_LIST[@]} -eq 0 || -z "${CHROM_LIST[0]:-}" ]]; then
+    mapfile -t CHROM_LIST < <(cut -f 1 "${COMBINED_GZ}.fai" | cut -f 1 -d '#' | sort | uniq)
+fi
 
 for CHROM in "${CHROM_LIST[@]}"; do
+    if [[ -z "$CHROM" ]]; then continue; fi
+
     CHR_FASTA="${PART_DIR}/${PREFIX}_${CHROM}.fasta.gz"
-    mapfile -t SEQ_IDS < <(grep -P $"^${CHROM}#" "${COMBINED_GZ}.fai" | cut -f 1)
+    mapfile -t SEQ_IDS < <(grep -P $"#${CHROM}$" "${COMBINED_GZ}.fai" | cut -f 1)
+    if [[ ${#SEQ_IDS[@]} -eq 0 ]]; then
+        mapfile -t SEQ_IDS < <(grep -P $"^${CHROM}#" "${COMBINED_GZ}.fai" | cut -f 1)
+    fi
+
     samtools faidx "${COMBINED_GZ}" "${SEQ_IDS[@]}" | bgzip -f -@ 4 > "${CHR_FASTA}"
     samtools faidx "${CHR_FASTA}"
 done

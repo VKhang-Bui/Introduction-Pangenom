@@ -57,16 +57,7 @@ fi
 
 S_PARAM="${OVERRIDE_S:-$S_CALC}"
 
-# Universal Wildcard FASTA Search (*${LOCUS}*)
-FASTA_MATCH=(data/intern/partitions/*"${LOCUS}"*.fasta.gz data/raw/*/*"${LOCUS}"*.fa data/raw/*"${LOCUS}"*.fa)
-
-FASTA_INPUT=""
-for f in "${FASTA_MATCH[@]}"; do
-    if [[ -f "$f" ]]; then
-        FASTA_INPUT="$f"
-        break
-    fi
-done
+FASTA_INPUT=$(ls data/intern/partitions/*_"${LOCUS}".fasta.gz data/intern/partitions/*"${LOCUS}"*.fasta.gz data/raw/*/*"${LOCUS}"*.fa 2>/dev/null | head -n 1 || true)
 
 if [[ -z "$FASTA_INPUT" ]]; then
     echo "Error: Could not find any FASTA file for locus '$LOCUS' in data/intern/partitions/ or data/raw/"
