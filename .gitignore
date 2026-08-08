@@ -8,8 +8,8 @@
 !src/**
 
 # Thư mục data/: Bỏ qua mọi file dữ liệu bên trong, chỉ giữ lại thư mục rỗng (.gitkeep) trên GitHub
-data/*
-!data/.gitkeep
+data/intern/*
+!data/intern/.gitkeep
 output/
 !output/.gitkeep
 results/*
