@@ -6,6 +6,16 @@ Tài liệu này ghi chép lại toàn bộ tiến độ làm việc, các cột
 
 ## 1. Nhật Ký Tiến Độ (Work Log)
 
+### Ngày 08/08/2026: Tổng Quát Hóa Script Tiền Xử Lý Phân Đoạn & Audit Hoàn Thiện Bộ Kịch Bản PGGB
+* **Công việc đã hoàn thành:**
+  1. Tổng quát hóa kịch bản tiền xử lý phân cụm & tính tham số PGGB từ `hla_partitioning_pipeline.sh` thành kịch bản chung cho mọi sinh vật (Nấm, Người...): [src/pggb/pangenome_partitioning_pipeline.sh](file:///home/vkhang-bui/1.HocViec/projects/pangenom/src/pggb/pangenome_partitioning_pipeline.sh).
+  2. Tích hợp tính năng dọn dẹp rác tự động: xóa toàn bộ tệp căn gióng trung gian (`*.mapping.paf*`, `*.edges.*`, `*.vertices.*`, thư mục `communities/`), chỉ lưu trữ các sản phẩm giá trị sử dụng lâu dài.
+  3. Kiểm tra mã nguồn (Audit) và hoàn thiện 100% kịch bản [src/pggb/small_variants_eval.sh](file:///home/vkhang-bui/1.HocViec/projects/pangenom/src/pggb/small_variants_eval.sh):
+     * Khắc phục triệt để lỗi khớp tên mẫu PanSN trong `rtg vcfeval` (`--sample "$CONTIG,$CONTIG"`).
+     * Bổ sung tính năng tự tìm tệp FASTA (`FASTA Auto-Discovery`) và ghi log thực thi tự động tại [small_variants_evaluation.log](file:///home/vkhang-bui/1.HocViec/projects/pangenom/data/intern/small_variants/small_variants_evaluation.log).
+     * Kết quả benchmark xuất sắc với **Precision 84.6% - 90.3%**, **Recall 70.0% - 76.9%**, **F1-Score 76.3% - 83.0%** (huref: F1 = 83.02%, mann: F1 = 80.03%, dbb: F1 = 79.82%). Biểu đồ lưu tại [precision_recall_f1.png](file:///home/vkhang-bui/1.HocViec/projects/pangenom/data/intern/small_variants/05_plots/precision_recall_f1.png).
+  4. Nâng cấp [src/pggb/run_pggb_params.sh](file:///home/vkhang-bui/1.HocViec/projects/pangenom/src/pggb/run_pggb_params.sh) với cơ chế tự động nhận diện tệp JSON (`JSON Auto-Discovery`).
+
 ### Ngày 28/07/2026: Chuẩn Hóa Cẩm Nang Kỹ Thuật Đầu Vào Cho PGGB
 * **Công việc đã hoàn thành:**
   1. Tổng hợp và biên soạn cẩm nang kỹ thuật về công cụ PGGB tại [documents/PGGB.md](file:///home/vkhang-bui/1.HocViec/theory_and_resources/pangenom/documents/PGGB.md).
